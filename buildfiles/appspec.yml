@@ -1,0 +1,30 @@
+version: 0.2
+env:
+  variables:
+    IMAGE_REPO_NAME: "phprepo"
+    SERVICE_NAME: "testservice"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    # commands:
+    #   - ls
+  pre_build:
+    commands:
+      - pip3 install ecs-deploy || { echo 'pip failed' ; exit 1; }
+  build:
+    commands:
+      - export DOCKER_IMAGE_TAG=$(aws ecr describe-images --output json --repository-name ${IMAGE_REPO_NAME} --region ${AWS_DEFAULT_REGION} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' | jq . --raw-output)  || { echo 'describe-ecr-images failed' ; exit 1; }
+      - aws sts assume-role --role-arn "arn:aws:iam::${CLUSTER_ACCOUNT_ID}:role/${ECS_ASSUME_ROLE}"  --role-session-name ECS_CLUSTER > login.json || { echo 'sts assume-role failed' ; exit 1; }
+      - GetAccess=$(jq '.Credentials.AccessKeyId' login.json) || { echo 'accesskeyid failed' ; exit 1; }
+      - Access=$(echo "$GetAccess" | sed -e 's/^"//' -e 's/"$//') || { echo 'accesskey-store failed' ; exit 1; }
+      - GetSecret=$(jq '.Credentials.SecretAccessKey' login.json) || { echo 'SecretAccessKey failed' ; exit 1; }
+      - secret=$(echo "$GetSecret" | sed -e 's/^"//' -e 's/"$//') || { echo 'SecretAccessKey-store failed' ; exit 1; }
+      - GetTOken=$(jq '.Credentials.SessionToken' login.json) || { echo 'SessionToken failed' ; exit 1; }
+      - token=$(echo "$GetTOken" | sed -e 's/^"//' -e 's/"$//') || { echo 'SessionToken-store failed' ; exit 1; }
+      - export AWS_ACCESS_KEY_ID=$Access || { echo 'export accesskey failed' ; exit 1; }
+      - export AWS_SECRET_ACCESS_KEY=$secret || { echo 'export secret failed' ; exit 1; }
+      - export AWS_SESSION_TOKEN=$token || { echo 'export session failed' ; exit 1; }
+      - rm -f login.json || { echo 'rm login.json failed' ; exit 1; }
+      - ecs deploy ${CLUSTER_NAME} ${SERVICE_NAME} --tag ${DOCKER_IMAGE_TAG} --rollback --no-deregister --timeout 600 --region ${CLUSTER_AWS_REGION}
