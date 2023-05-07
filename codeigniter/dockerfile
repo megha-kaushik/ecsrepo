@@ -1,0 +1,21 @@
+FROM 347462127665.dkr.ecr.us-east-1.amazonaws.com/phprepo as build
+
+#ensure that the server packages are up to date
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install apache2 -y
+
+#installs MySQLi and ZIP on container (ZIP used by Composer)
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
+#enable mod_rewrite for URLS
+RUN a2enmod rewrite
+ENV APACHE_DOCUMENT_ROOT /var/www/html/codeigniter
+RUN service apache2 restart
+
+
+
+COPY ./codeigniter.conf /etc/apache2/sites-available/
+COPY . /var/www/html/codeigniter
+WORKDIR /var/www/html/codeigniter
+EXPOSE 80
