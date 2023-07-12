@@ -116,3 +116,9 @@ variable "dbsecuritygroup" {
   type        = string
   default     = ""
 }
+
+variable "redshift_name" {
+  description = "Name of the redshift name"
+  type        = string
+  default     = ""
+}

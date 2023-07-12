@@ -151,3 +151,16 @@ resource "aws_security_group" "dbsecuritygroup" {
 
 tags = local.tags
 }
+
+
+############### redshift #####################
+
+resource "redshift_database" "db_redshift" {
+  name = "${var.region_alias}-${var.country}-${var.account_alias}-${var.redshift_name}"
+  owner = "my_user"
+  connection_limit = 123456
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
