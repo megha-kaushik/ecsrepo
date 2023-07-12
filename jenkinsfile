@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkoutfrom GIT') {
+            steps {
+                git branch: 'main',
+                url: 'git@github.com:megha-kaushik/ecsrepo.git'
+            }
+        }
+
+        stage('terraform init:') {
+            steps {
+                
+                sh 'terraform  init'
+              }                
+                
+            }
+        }
+            
+        stage('terraform fmt:') {
+            steps {
+             
+                sh 'terraform fmt'
+            }
+        }
+        
+
+        stage('terraform validate:') {
+            steps {
+                sh 'terraform  validate'
+            }
+        }
+        
+
+
+        stage('terraform plan:') {
+            steps {
+                sh 'terraform  plan'
+            }
+        }
+
+
+        stage('Manual-Approval:') {
+            steps {
+                 timeout(time: 15, unit: "MINUTES") {
+                        input message: 'Do you want to approve the deployment?', ok: 'Yes'
+                    }
+
+                 echo "Terraform applying started"
+                
+            }
+           
+
+
+        stage('terraform apply:') {
+            steps {
+                sh 'terraform  apply'
+            }
+        }
+
+        
+
+        // stage('Destroy: Module 1') {
+        //     steps {
+        //         sh 'terraform -chdir="./Module1" destroy -auto-approve'
+        //     }
+        // }
+
+       
+
+    }
+}
+}
