@@ -9,16 +9,16 @@ pipeline {
             }
         }
 
-        stage('terraform init:') {
+        stage('terraform init') {
             steps {
                 
                 sh 'terraform  init'
               }                
                 
-            }
         }
+    
             
-        stage('terraform fmt:') {
+        stage('terraform fmt') {
             steps {
              
                 sh 'terraform fmt'
@@ -26,7 +26,7 @@ pipeline {
         }
         
 
-        stage('terraform validate:') {
+        stage('terraform validate') {
             steps {
                 sh 'terraform  validate'
             }
@@ -34,14 +34,14 @@ pipeline {
         
 
 
-        stage('terraform plan:') {
+        stage('terraform plan') {
             steps {
                 sh 'terraform  plan'
             }
         }
 
 
-        stage('Manual-Approval:') {
+        stage('Manual-Approval') {
             steps {
                  timeout(time: 15, unit: "MINUTES") {
                         input message: 'Do you want to approve the deployment?', ok: 'Yes'
@@ -50,10 +50,10 @@ pipeline {
                  echo "Terraform applying started"
                 
             }
-           
+        }   
 
 
-        stage('terraform apply:') {
+        stage('terraform apply') {
             steps {
                 sh 'terraform  apply'
             }
