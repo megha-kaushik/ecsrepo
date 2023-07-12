@@ -5,7 +5,7 @@ pipeline {
         stage('checkoutfrom GIT') {
             steps {
                 git branch: 'main',
-                url: 'git@github.com:megha-kaushik/ecsrepo.git'
+                url: 'https://github.com/megha-kaushik/ecsrepo.git'
             }
         }
 
