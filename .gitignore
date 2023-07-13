@@ -3,3 +3,4 @@
 *.tfstate
 *.plan
 *.lock.hcl
+*.tfstate,backup

@@ -117,8 +117,26 @@ variable "dbsecuritygroup" {
   default     = ""
 }
 
-variable "redshift_name" {
-  description = "Name of the redshift name"
+variable "launchconfig" {
+  description = "Name of the launch configuration to be used"
+  type        = string
+  default     = ""
+}
+
+variable "launchinstancetype" {
+  description = "Name of the launch instance type config to be used"
+  type        = string
+  default     = ""
+}
+
+variable "autoscalinggroup" {
+  description = "Name of the auto scaling group to be used"
+  type        = string
+  default     = ""
+}
+
+variable "autoscalinggrouppolicy" {
+  description = "Name of the auto scaling group policy to be used"
   type        = string
   default     = ""
 }
