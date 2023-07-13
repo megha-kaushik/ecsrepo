@@ -195,7 +195,7 @@ resource "aws_launch_template" "launch_conf" {
   }
 
   key_name  = var.key_name
-  vpc_security_group_ids = ["${aws_security_group.mysecuritygroup.id}"]
+#   vpc_security_group_ids = ["${aws_security_group.mysecuritygroup.id}"]
 
   lifecycle {
     create_before_destroy = true
