@@ -236,7 +236,7 @@ resource "aws_autoscaling_policy" "mypolicy" {
   adjustment_type        = "ChangeInCapacity"
   policy_type =           "TargetTrackingScaling"
   estimated_instance_warmup = 60
-  cooldown               = 60
+#   cooldown               = 60
   autoscaling_group_name = aws_autoscaling_group.myautoscaling.name
  
 
