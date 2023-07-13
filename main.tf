@@ -200,7 +200,7 @@ resource "aws_launch_template" "launch_conf" {
     create_before_destroy = true
   }
 
-  tags = local.tags
+  
 
 }
 
@@ -221,7 +221,7 @@ resource "aws_autoscaling_group" "myautoscaling" {
     create_before_destroy = true
   }
 
-  tags = local.tags
+
 }
 
 
@@ -243,6 +243,6 @@ resource "aws_autoscaling_policy" "mypolicy" {
     target_value = 80.0
   }
 
-  tags = local.tags
+  
 
 }
