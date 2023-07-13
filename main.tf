@@ -191,6 +191,7 @@ resource "aws_launch_template" "launch_conf" {
 
   network_interfaces {
     associate_public_ip_address = true
+    security_groups = ["${aws_security_group.mysecuritygroup.id}"]
   }
 
   key_name  = var.key_name
