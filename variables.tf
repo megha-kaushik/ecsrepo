@@ -140,3 +140,15 @@ variable "autoscalinggrouppolicy" {
   type        = string
   default     = ""
 }
+
+variable "redshiftcluser" {
+  description = "Name of the redsift cluster"
+  type        = string
+  default     = ""
+}
+
+variable "nodetype" {
+  description = "Name of the redsift cluster node type"
+  type        = string
+  default     = ""
+}

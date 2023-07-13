@@ -8,7 +8,10 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.4"
     }
-    
+    random = {
+      source  = "hashicorp/random"
+      version = "3.4.3"
+    }
       
     }
   }
@@ -17,6 +20,7 @@ terraform {
 provider "aws" {
   region  = "us-east-1"
 #   profile = "arn:aws:iam::<your account>:instance-profile/<your role name>" 
+  
   
   
 }

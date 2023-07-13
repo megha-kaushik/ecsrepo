@@ -251,3 +251,22 @@ resource "aws_autoscaling_policy" "mypolicy" {
   
 
 }
+
+####################  code for redshift #############
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!$%&*()-_=+[]{}<>:?"
+}
+
+
+resource "aws_redshift_cluster" "example" {
+  cluster_identifier = "${var.region_alias}-${var.country}-${var.account_alias}-${var.redshiftcluser}"
+  database_name      = "myredshiftdb"
+  master_username    = var.username
+  master_password    = random_password.password.result
+  node_type          = var.nodetype
+  cluster_type       = "single-node"
+  skip_final_snapshot = true
+}
