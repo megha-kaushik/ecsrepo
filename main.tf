@@ -208,7 +208,11 @@ resource "aws_launch_template" "launch_conf" {
 
 resource "aws_autoscaling_group" "myautoscaling" {
   name                 = "${var.region_alias}-${var.country}-${var.account_alias}-${var.autoscalinggroup}"
-  launch_configuration = aws_launch_template.launch_conf.name
+  
+  launch_template {
+    id     = aws_launch_template.launch_conf.id
+    version = "$Latest"
+  }
   availability_zones = ["us-east-1a","us-east-1b"]
   health_check_type         = "EC2"
   health_check_grace_period = 60
